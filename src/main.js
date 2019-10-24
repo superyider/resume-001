@@ -8,11 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import globaljs from './assets/js/global.js'//全域ＪＳ
 
-Vue.use( {
-  BootstrapVue,
-  Slick,
-  globaljs 
-})
+Vue.use( globaljs , BootstrapVue , Slick )
 Vue.config.productionTip = false
 
 new Vue({
@@ -20,3 +16,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+

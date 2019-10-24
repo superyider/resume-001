@@ -1,1 +1,91 @@
-$yoyoyo:green;
+$mobile_header_h:60px;
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+//animate
+@keyframes menubg_ani_c1 {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0.2;
+    }
+}
+
+@keyframes openMenu_ani {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+
+    to {
+        height: 100vh;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.8;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes moveUp {
+    from {
+        transform: translateY(0);
+        -webkit-transform: translateY(0);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+
+    to {
+        transform: translateY(-5px);
+        -webkit-transform: translateY(-5px);
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.6);
+        -webkit-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.6);
+    }
+}
+
+@keyframes rotatiom_left_ani {
+    from {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        position: absolute;
+    }
+
+    to {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        position: absolute;
+        top: 20px;
+    }
+}
+
+@keyframes rotatiom_right_ani {
+    from {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        position: absolute;
+    }
+
+    to {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        margin-bottom: 10px;
+        position: absolute;
+        top: 20px;
+    }
+}
