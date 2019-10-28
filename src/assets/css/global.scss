@@ -2,7 +2,7 @@ $mobile_header_h:60px;
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity .5s;
+    transition: opacity .6s;
 }
 
 .fade-enter,
@@ -17,7 +17,7 @@ $mobile_header_h:60px;
     }
 
     to {
-        opacity: 0.2;
+        opacity: 0.6;
     }
 }
 
@@ -59,33 +59,3 @@ $mobile_header_h:60px;
     }
 }
 
-@keyframes rotatiom_left_ani {
-    from {
-        transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        position: absolute;
-    }
-
-    to {
-        transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
-        position: absolute;
-        top: 20px;
-    }
-}
-
-@keyframes rotatiom_right_ani {
-    from {
-        transform: rotate(0deg);
-        -webkit-transform: rotate(0deg);
-        position: absolute;
-    }
-
-    to {
-        transform: rotate(-45deg);
-        -webkit-transform: rotate(-45deg);
-        margin-bottom: 10px;
-        position: absolute;
-        top: 20px;
-    }
-}

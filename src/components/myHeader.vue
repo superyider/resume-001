@@ -1,39 +1,22 @@
 <template>
     <header class="header">
+        <!-- menu-btn 漢堡 -->
+        <button v-show="isMobile" :class="['nav_btn', (isOpenMenu) ? 'close':'']" @click="menuCtrl">
+            <span class="bar-1"></span>
+            <span class="bar-2"></span>
+            <span class="bar-3"></span>
+        </button>
         <div class="container">
-            <!--a href class="logo">
+            <a href class="logo">
                 <img src="images/logo_svg.svg" />
-            </a-->
-
-            <!-- menu-btn 漢堡 -->
-            <transition name="fade">
-                <button v-show="isMobile" :class="['nav_btn', (isOpenMenu) ? 'close':'']">
-                    <span class="bar-1"></span>
-                    <span class="bar-2"></span>
-                    <span class="bar-3"></span>
-                </button>
-            </transition>
+            </a>
 
             <!-- menu-list -->
-            <transition name="fade">
-                <ul class="nav" :class="['nav',(isMobile) ? 'mobile':'']">
-                    <li class="item1">
-                        <a class="nav-link">about me</a>
-                    </li>
-                    <li class="item2">
-                        <a class="nav-link">my skill</a>
-                    </li>
-                    <li class="item3">
-                        <a class="nav-link">illustration</a>
-                    </li>
-                    <li class="item4">
-                        <a class="nav-link">web design</a>
-                    </li>
-                    <li class="item5">
-                        <a class="nav-link">graphic {{ this.screenWidth }}</a>
-                    </li>
-                </ul>
-            </transition>
+            <ul class="nav" :class="['nav',(isMobile) ? 'mobile':'',(isOpenMenu && isMobile) ? 'menuOpen':'',]">
+                <li v-for="(item,index) in menuDatas" :key="index" :class="['item','item'+index,( activeMenu == index ) ? 'active':'']">
+                    <a class="nav-link" @click="menuActive(index)">{{ item.name }}</a>
+                </li>
+            </ul>
         </div>
     </header>
 </template>
@@ -44,70 +27,138 @@
     width: 100%;
     background: rgb(209, 209, 209);
     display: flex;
-    .container {
-        position: relative;
-        .nav_btn {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 1px solid red;
-            top: 0;
-            right: 0;
-            padding: 14px 10px;
-            background: none;
-            border: none;
-            outline: none;
-            z-index: 999;
-            &.close {
-                span.bar-1 {
-                    position: absolute;
-                    animation: rotatiom_left_ani 0.3s ease-in-out 0s 1 alternate
-                        forwards;
-                    -webkit-animation: rotatiom_left_ani 0.3s ease-in-out 0s 1
-                        alternate forwards;
-                }
-                span.bar-2 {
-                    display: none;
-                }
-                span.bar-3 {
-                    position: absolute;
-                    animation: rotatiom_right_ani 0.3s ease-in-out 0s 1
-                        alternate forwards;
-                    -webkit-animation: rotatiom_right_ani 0.3s ease-in-out 0s 1
-                        alternate forwards;
-                }
+    z-index: 9999;
+    .nav_btn {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        top: 0;
+        right: 0;
+        padding: 10px 15px;
+        background: none;
+        border: none;
+        outline: none;
+        z-index: 999;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        &.close {
+            span.bar-1 {
+                position: absolute;
+                animation: rotatiom_left_ani 0.3s ease-in-out 0s 1 alternate
+                    forwards;
+                -webkit-animation: rotatiom_left_ani 0.3s ease-in-out 0s 1
+                    alternate forwards;
             }
-            span {
-                display: block;
-                height: 2px;
-                width: 24px;
-                margin: 0px auto 5px;
-                background: #3b3b3b;
+            span.bar-2 {
+                display: none;
+            }
+            span.bar-3 {
+                position: absolute;
+                animation: rotatiom_right_ani 0.3s ease-in-out 0s 1 alternate
+                    forwards;
+                -webkit-animation: rotatiom_right_ani 0.3s ease-in-out 0s 1
+                    alternate forwards;
             }
         }
+        span {
+            display: block;
+            height: 2px;
+            width: 24px;
+            margin: 3px auto;
+            background: #3b3b3b;
+        }
+
+        @keyframes rotatiom_left_ani {
+            from {
+                transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                position: absolute;
+            }
+
+            to {
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+                position: absolute;
+                top: 26px;
+                width: 30px;
+            }
+        }
+        @keyframes rotatiom_right_ani {
+            from {
+                transform: rotate(0deg);
+                -webkit-transform: rotate(0deg);
+                position: absolute;
+            }
+
+            to {
+                transform: rotate(-45deg);
+                -webkit-transform: rotate(-45deg);
+                margin-bottom: 10px;
+                position: absolute;
+                top: 26px;
+                width: 30px;
+            }
+        }
+    }
+    .container {
+        position: relative;
         .logo {
             display: block;
             width: 100px;
-            height: 40px;
-            margin: 10px;
+            height: 30px;
+            margin: 15px 0;
             text-align: left;
             img {
                 height: 100%;
-                opacity: 0.9;
+                opacity: 0.6;
             }
         }
         .nav {
             position: absolute;
             min-height: 60px;
+            height: 100%;
             top: 0;
             right: 0;
             align-items: center;
+            z-index: 9;
             &.mobile {
+                position: fixed;
                 display: none;
+                width: 100%;
+                background: #fff;
+                flex-flow: column;
+                padding-top: 60px;
+                li.item {
+                    height: auto;
+                }
             }
-            li {
+            &.menuOpen {
+                display: block;
+                animation: openMenu_ani 0.3s ease-in-out 0s 1 alternate
+                    forwards;
+                -webkit-animation: openMenu_ani 0.3s ease-in-out 0s 1
+                    alternate forwards;
+            }
+            li.item {
+                height: 100%;
+                align-items: center;
+                display: flex;
+                &.active{
+                    color: red;
+                }
                 a.nav-link {
+                    display: flex;
+                    height: 100%;
+                    width: 100%;
+                    padding: 15px 10px;
+                    align-items: center;
+                    justify-content: center;
                     cursor: pointer;
+                    &:hover {
+                        background: #ddd;
+                    }
                 }
             }
         }
@@ -122,12 +173,15 @@ export default {
         return {
             isMobile: false,
             isOpenMenu: false,
-            screenWidth: document.body.clientWidth
+            screenWidth: document.body.clientWidth,
+            activeMenu:0,
+            menuDatas:{}
         };
     },
     mounted() {
         //resize
         const that = this;
+        that.menuDatas = this.$menuDatas;
         window.onresize = () => {
             return (() => {
                 window.screenWidth = document.body.clientWidth;
@@ -146,14 +200,25 @@ export default {
                     that.init();
                     console.log(that.screenWidth);
                     that.timer = false;
-                }, 500);
+                }, 200);
             }
         }
     },
     methods: {
         init() {
             let that = this;
-            that.isMobile = that.screenWidth < 991 ? true : false;
+            let mobileMax = that.$getMobileWidth;
+            that.isMobile = that.screenWidth < mobileMax ? true : false;
+            that.isOpenMenu = that.screenWidth > mobileMax ? false : "";
+        },
+        menuCtrl() {
+            let that = this;
+            that.isOpenMenu = !that.isOpenMenu;
+        },
+        menuActive(num){
+            let that = this;
+            that.activeMenu = num;
+            that.menuCtrl();
         }
     }
 };
