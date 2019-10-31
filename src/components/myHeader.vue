@@ -12,9 +12,16 @@
             </a>
 
             <!-- menu-list -->
-            <ul class="nav" :class="['nav',(isMobile) ? 'mobile':'',(isOpenMenu && isMobile) ? 'menuOpen':'',]">
-                <li v-for="(item,index) in menuDatas" :key="index" :class="['item','item'+index,( activeMenu == index ) ? 'active':'']">
-                    <a class="nav-link" @click="menuActive(index)">{{ item.name }}</a>
+            <ul
+                :class="['nav',(isMobile) ? 'mobile':'',(isOpenMenu && isMobile) ? 'menuOpen':'',]"
+                v-scroll-spy-link
+            >
+                <li
+                    v-for="(item,index) in menuDatas"
+                    :key="index"
+                    :class="['item','item'+index,( activeMenu == index ) ? 'active':'']"
+                >
+                    <a class="nav-link" @click="menuActive(index,$event)">{{ item.name }}</a>
                 </li>
             </ul>
         </div>
@@ -25,9 +32,12 @@
 .header {
     height: 60px;
     width: 100%;
-    background: rgb(209, 209, 209);
+    background:#fff;
     display: flex;
     z-index: 9999;
+    position: fixed;
+    top: 0;
+    box-shadow: 0 0px 5px 0 rgba(0,0,0,0.2);
     .nav_btn {
         position: absolute;
         width: 60px;
@@ -44,6 +54,7 @@
         align-items: center;
         justify-content: center;
         &.close {
+            position: fixed;
             span.bar-1 {
                 position: absolute;
                 animation: rotatiom_left_ani 0.3s ease-in-out 0s 1 alternate
@@ -136,28 +147,31 @@
             }
             &.menuOpen {
                 display: block;
-                animation: openMenu_ani 0.3s ease-in-out 0s 1 alternate
+                animation: openMenu_ani 0.3s ease-in-out 0s 1 alternate forwards;
+                -webkit-animation: openMenu_ani 0.3s ease-in-out 0s 1 alternate
                     forwards;
-                -webkit-animation: openMenu_ani 0.3s ease-in-out 0s 1
-                    alternate forwards;
             }
             li.item {
                 height: 100%;
                 align-items: center;
                 display: flex;
-                &.active{
-                    color: red;
-                }
                 a.nav-link {
                     display: flex;
                     height: 100%;
                     width: 100%;
-                    padding: 15px 10px;
+                    padding: 15px 15px;
                     align-items: center;
                     justify-content: center;
                     cursor: pointer;
                     &:hover {
-                        background: #ddd;
+                        background: #fff;
+                        color: red;
+                    }
+                }
+                &.active {
+                    color: red;
+                    a {
+                        background: #fff;
                     }
                 }
             }
@@ -174,21 +188,27 @@ export default {
             isMobile: false,
             isOpenMenu: false,
             screenWidth: document.body.clientWidth,
-            activeMenu:0,
-            menuDatas:{}
+            activeMenu: 0,
+            menuDatas: {}
         };
     },
     mounted() {
-        //resize
         const that = this;
         that.menuDatas = this.$menuDatas;
+
         window.onresize = () => {
             return (() => {
                 window.screenWidth = document.body.clientWidth;
                 that.screenWidth = window.screenWidth;
             })();
         };
+
         this.init();
+    },
+    computed:{
+        getNavStatus(){
+            return this.$store.getters.getNavStatus;
+        }
     },
     watch: {
         screenWidth(val) {
@@ -202,6 +222,9 @@ export default {
                     that.timer = false;
                 }, 200);
             }
+        },
+        getNavStatus(val){
+            this.activeMenu = val;
         }
     },
     methods: {
@@ -211,14 +234,19 @@ export default {
             that.isMobile = that.screenWidth < mobileMax ? true : false;
             that.isOpenMenu = that.screenWidth > mobileMax ? false : "";
         },
+        //mobile menu control
         menuCtrl() {
             let that = this;
             that.isOpenMenu = !that.isOpenMenu;
         },
-        menuActive(num){
+        //set menu active
+        menuActive(num, event) {
             let that = this;
-            that.activeMenu = num;
+            this.activeMenu = '';
+            this.$store.commit('setNavStatus',num);
+            this.activeMenu = num;
             that.menuCtrl();
+            
         }
     }
 };

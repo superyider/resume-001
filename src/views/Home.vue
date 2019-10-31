@@ -1,88 +1,210 @@
 <template>
-    <div class="home">
-        <section class="sec-1">
+    <div id="home" class="home" v-scroll-spy="{offset: 60}">
+        <!-- about -->
+        <section ref="about" id="sec-1" class="sec-1">
             <div class="container pt-lg-5 pt-3">
                 <div class="row">
-                    <div class="img-box col-lg-5 mb-4">
-                        <img :src="contentDatas.about.img" alt="about image" class="w-100">
-                    </div>
-                    <div class="content-box col-lg-6">
+                    
+                    <div ref="contentBox" class="content-box col-lg-8">
                         <h4 class="title">{{ contentDatas.about.title }}</h4>
                         <p class="content">{{ contentDatas.about.content }}</p>
                         <ul class="profile pt-3">
                             <li>
                                 <span class="badge badge-secondary mr-2">Name</span>
-                                <span class="">{{ contentDatas.about.name }}</span>
+                                <span class>{{ contentDatas.about.name }}</span>
                             </li>
                             <li>
                                 <span class="badge badge-secondary mr-2">Line</span>
-                                <span class="">{{ contentDatas.about.line }}</span>
+                                <span class>{{ contentDatas.about.line }}</span>
                             </li>
                             <li>
                                 <span class="badge badge-secondary mr-2">Mail</span>
-                                <span class=""><a :href="[this.contentDatas.about.mail]">{{ contentDatas.about.mail }}</a></span>
+                                <span class>
+                                    <a
+                                        :href="[this.contentDatas.about.mail]"
+                                    >{{ contentDatas.about.mail }}</a>
+                                </span>
                             </li>
                             <li>
                                 <span class="badge badge-secondary mr-2">Mobile</span>
-                                <span class="">{{ contentDatas.about.mobile }}</span>
+                                <span class>{{ contentDatas.about.mobile }}</span>
                             </li>
+                        </ul>
+                    </div>
+                    <div ref="imgBox" class="img-box col-lg-4 mb-4">
+                        <img :src="contentDatas.about.img" alt="about image" class="w-100" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Skills -->
+        <section id="sec-2" class="sec-2">
+            <div class="container">
+                <div class="row">
+                    <div class="skill-box col-lg-4 mb-4 pt-5 pb-5">
+                        <h4>用專業的技術為您提供服務</h4>
+                        <ul>
+                            <li>Web Site (RWD)/Campaign Site (RWD)</li>
+                            <li>Html5/Css3/Scss/jQuery/vueJs</li>
+                            <li>App User Interface</li>
+                            <li>Facebook Canvas/Banner</li>
+                            <li>Graphic/Logo</li>
+                            <li>Flash ActionScript3</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
+        <!-- Skills -->
+        <section id="sec-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col mt-5">
+                        <img src="https://fakeimg.pl/1280x600/ddd" alt="fack" class="w-100" />
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--silentbox-group>
+            <silentbox-item src="images/image001.jpg" description="Sunken dreams II. by Arbebuk">
+                <img src="images/image001.jpg" width="200px" />
+            </silentbox-item>
+            <silentbox-item src="images/image002.jpg" description="Tunnel View Sunrise by Porbital">
+                <img src="images/image002.jpg" width="200px" />
+            </silentbox-item>
+            <silentbox-item src="images/image005.jpg" description="Mythology by Nelleke">
+                <img src="images/image005.jpg" width="200px" />
+            </silentbox-item>
+        </silentbox-group-->
     </div>
 </template>
 
 <script>
+import { TimelineMax } from "gsap";
+
 export default {
     name: "home",
     components: {},
-    data: function(){
-        return{
-            contentDatas:{
-                about:{
-                    title:"資深網頁 / 插畫 / 視覺設計師",
-                    content:"從事網頁設計工作十多年，對網頁設計具有高度熱誠，為您提供形象官網、活動網站、網站平台設計，RWD自適應網站技術服務，媒體素材設計、插畫設計、平面設計及影像修圖。",
-                    name:"劉怡德",
-                    line:"yider",
-                    mail:"superyider@gmail.com",
-                    mobile:"0939180232",
-                    img:"https://fakeimg.pl/400x300/eee"
+    data: function() {
+        return {
+            scrollTop: 0,
+            secActs: [],
+            contentDatas: {
+                about: {
+                    title: "資深網頁 / 插畫 / 視覺設計師",
+                    content:
+                        "從事網頁設計工作十多年，對網頁設計具有高度熱誠，為您提供形象官網、活動網站、網站平台設計，RWD自適應網站技術服務，媒體素材設計、插畫設計、平面設計及影像修圖。",
+                    name: "劉怡德",
+                    line: "yider",
+                    mail: "superyider@gmail.com",
+                    mobile: "0939180232",
+                    img:"http://8yen.tw/resume/images/img01-01.svg"
+                    //img: "https://fakeimg.pl/300x300/eee"
                 }
             }
+        };
+    },
+    watch: {
+        scrollTop(val) {
+            //this.scrollSpy(val);
         }
     },
-    methods: {}
+    mounted() {
+        const { imgBox, contentBox, about } = this.$refs;
+        const sec1Act = new TimelineMax({ delay: 0.4, paused: true });
+
+        this.secActs[0] = sec1Act;
+
+        sec1Act
+            .from(contentBox, 1, { y: "10%", opacity: 0 })
+            .from(imgBox, 1, { x: "50%", opacity: 0 }, "-=1");
+
+        //onscroll
+        window.onscroll = () => {
+            let that = this;
+            return (() => {
+                var scrolltop =
+                    document.documentElement.scrollTop ||
+                    window.pageYOfset ||
+                    document.body.scrollTop;
+
+                that.scrollTop = scrolltop;
+
+                if (!this.timer) {
+                    this.timer = true;
+                    let that = this;
+                    setTimeout(function() {
+                        console.log("end", that.scrollTop);
+                        that.scrollSpy(that.scrollTop);
+                        that.timer = false;
+                    }, 300);
+                }
+            })();
+        };
+        this.secActs[0].play();
+    },
+    methods: {
+        scrollSpy(scrollNum) {
+            let that = this;
+            const sec1 = document.getElementById("sec-1").offsetTop - 200;
+            const sec2 = document.getElementById("sec-2").offsetTop - 200;
+            const sec3 = document.getElementById("sec-3").offsetTop - 200;
+            if (scrollNum >= sec1 && scrollNum < sec2) {
+                this.$store.commit("setNavStatus", 0);
+                this.secActs[0].play();
+            }
+            if (scrollNum >= sec2 && scrollNum < sec3) {
+                this.$store.commit("setNavStatus", 1);
+            }
+            if (scrollNum >= sec3) {
+                this.$store.commit("setNavStatus", 2);
+            }
+        }
+    }
 };
 </script>
 <style lang="scss">
-.sec-1{
-    .container{
-        .row{
+.sec-1 {
+    .container {
+        .row {
             justify-content: center;
-            .content-box{
+            .content-box {
                 text-align: left;
-                .title{
-
+                .title {
                 }
-                .content{
+                .content {
                     font-size: 1em;
                     line-height: 2em;
                     text-align: justify;
                 }
-                .profile{
+                .profile {
                     list-style: none;
                     padding: 0;
                     margin: 0;
                     border-top: 1px solid #ddd;
-                    li{
+                    li {
                         padding: 5px;
                         margin: 0;
-                        .badge{
+                        .badge {
                             width: 100px;
                             border-radius: 10px;
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.sec-2 {
+    .container {
+        .row {
+            .skill-box {
+                text-align: left;
+                ul {
+                    line-height: 30px;
+                    li {
+                        text-align: left;
                     }
                 }
             }
