@@ -60,22 +60,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col mt-5">
-                        <img src="https://fakeimg.pl/1280x600/ddd" alt="fack" class="w-100" />
                     </div>
                 </div>
             </div>
         </section>
-        <!--silentbox-group>
-            <silentbox-item src="images/image001.jpg" description="Sunken dreams II. by Arbebuk">
-                <img src="images/image001.jpg" width="200px" />
-            </silentbox-item>
-            <silentbox-item src="images/image002.jpg" description="Tunnel View Sunrise by Porbital">
-                <img src="images/image002.jpg" width="200px" />
-            </silentbox-item>
-            <silentbox-item src="images/image005.jpg" description="Mythology by Nelleke">
-                <img src="images/image005.jpg" width="200px" />
-            </silentbox-item>
-        </silentbox-group-->
     </div>
 </template>
 
@@ -89,6 +77,7 @@ export default {
         return {
             scrollTop: 0,
             secActs: [],
+            jsonDatas:[],
             contentDatas: {
                 about: {
                     title: "資深網頁 / 插畫 / 視覺設計師",
@@ -98,8 +87,7 @@ export default {
                     line: "yider",
                     mail: "superyider@gmail.com",
                     mobile: "0939180232",
-                    img:"http://8yen.tw/resume/images/img01-01.svg"
-                    //img: "https://fakeimg.pl/300x300/eee"
+                    img:"https://fakeimg.pl/300x300/eee"
                 }
             }
         };
@@ -109,17 +97,22 @@ export default {
             //this.scrollSpy(val);
         }
     },
+    created(){
+        //取得資料
+        this.getData();
+    },
     mounted() {
+
+        //動畫效果
         const { imgBox, contentBox, about } = this.$refs;
-        const sec1Act = new TimelineMax({ delay: 0.4, paused: true });
-
+        const sec1Act = new TimelineMax({ delay: 0.4, paused: true});
         this.secActs[0] = sec1Act;
-
         sec1Act
-            .from(contentBox, 1, { y: "10%", opacity: 0 })
-            .from(imgBox, 1, { x: "50%", opacity: 0 }, "-=1");
+        .from(contentBox, 1, { y: "10%", opacity: 0 })
+        .from(imgBox, 1, { x: "50%", opacity: 0 }, "-=1")
+        .play();
 
-        //onscroll
+        //捲動偵測
         window.onscroll = () => {
             let that = this;
             return (() => {
@@ -134,8 +127,7 @@ export default {
                     this.timer = true;
                     let that = this;
                     setTimeout(function() {
-                        console.log("end", that.scrollTop);
-                        that.scrollSpy(that.scrollTop);
+                        that.scrollEnd();
                         that.timer = false;
                     }, 300);
                 }
@@ -154,11 +146,24 @@ export default {
                 this.secActs[0].play();
             }
             if (scrollNum >= sec2 && scrollNum < sec3) {
+                that.secActs[0].reverse();
                 this.$store.commit("setNavStatus", 1);
             }
             if (scrollNum >= sec3) {
                 this.$store.commit("setNavStatus", 2);
             }
+        },
+        scrollEnd(){
+            let that = this;
+            that.scrollSpy(that.scrollTop);
+        },
+        getData() {
+            //const cors = "https://cors-anywhere.herokuapp.com/";
+            const url = "https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json";
+            let that = this;
+            that.axios.get(`${url}`).then(response => {
+                that.jsonDatas = Object.keys(response.data.retVal).map(key => response.data.retVal[key]);
+            });
         }
     }
 };

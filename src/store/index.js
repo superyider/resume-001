@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const state = {
 	isMobile: false, //裝置狀態
 	isOpenMenu: false, //選單開啟狀態
-	activeMenu: 0 //當前顯示的導覽
+	activeMenu: 0, //當前顯示的導覽
+	jsonDatas:Object
 }
 
 export default new Vuex.Store({
@@ -23,13 +24,18 @@ export default new Vuex.Store({
 		//設置選單顯示狀態
 		setNavStatus(state, val) {
 			state.activeMenu = val;
+		},
+		setJsonDatas(state, val){
+			state.jsonDatas = val;
 		}
 	},
 	actions: {
+		
 	},
 	getters: {
 		getMobileStatus: state => state.isMobile,
 		getMenuStatus: state => state.isOpenMenu,
 		getNavStatus: state => state.activeMenu,
+		getJsonDatas:state => state.jsonDatas
 	}
 })

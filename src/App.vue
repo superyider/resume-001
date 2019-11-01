@@ -6,23 +6,10 @@
 </template>
 
 <script>
-
 import myheader from "./components/myHeader";
 export default {
     components: {
         myheader
-    },
-    mounted(){
-    },
-    methods: {
-        
-        getData() {
-          const cors = 'https://cors-anywhere.herokuapp.com/';
-          const url = 'http://api.komavideo.com/news/list';
-          let that = this;
-            that.axios.get(`${cors}${url}`).then(response => console.log(response.data));
-        }
-        
     }
 };
 </script>
