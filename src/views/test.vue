@@ -10,6 +10,9 @@ export default {
         return {
             fakeData: ["111", "222", "333", "444", "555"]
         };
+    },
+    mounted(){
+        this.$store.commit('setHideHeader',true)
     }
 };
 </script>

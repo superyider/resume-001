@@ -83,6 +83,9 @@ export default {
         this.getData();
     },
     mounted() {
+        //設定版頭是否顯示
+        this.$store.commit('setHideHeader',false)
+
         //動畫效果
         const { imgBox, contentBox, about } = this.$refs;
         const sec1Act = new TimelineMax({ delay: 0.4, paused: true });

@@ -6,21 +6,21 @@ import test from '../views/test.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
-  {
-    path: '/test',
-    name: 'test',
-    component: test
-  },
+	{
+		path: '/',
+		name: 'home',
+		component: Home
+	},
+	{
+		path: '/test',
+		name: 'test',
+		component: test
+	},
 
 ]
 
 const router = new VueRouter({
-  routes
+	routes
 })
 
 export default router
