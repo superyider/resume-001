@@ -1,70 +1,40 @@
-<template>
-    <div id="home" class="home" v-scroll-spy="{offset: 60}">
-        <!-- about -->
-        <section ref="about" id="sec-1" class="sec-1">
-            <div class="container pt-lg-5 pt-3">
-                <div class="row">
-                    
-                    <div ref="contentBox" class="content-box col-lg-8">
-                        <h4 class="title">{{ contentDatas.about.title }}</h4>
-                        <p class="content">{{ contentDatas.about.content }}</p>
-                        <ul class="profile pt-3">
-                            <li>
-                                <span class="badge badge-secondary mr-2">Name</span>
-                                <span class>{{ contentDatas.about.name }}</span>
-                            </li>
-                            <li>
-                                <span class="badge badge-secondary mr-2">Line</span>
-                                <span class>{{ contentDatas.about.line }}</span>
-                            </li>
-                            <li>
-                                <span class="badge badge-secondary mr-2">Mail</span>
-                                <span class>
-                                    <a
-                                        :href="[this.contentDatas.about.mail]"
-                                    >{{ contentDatas.about.mail }}</a>
-                                </span>
-                            </li>
-                            <li>
-                                <span class="badge badge-secondary mr-2">Mobile</span>
-                                <span class>{{ contentDatas.about.mobile }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div ref="imgBox" class="img-box col-lg-4 mb-4">
-                        <img :src="contentDatas.about.img" alt="about image" class="w-100" />
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Skills -->
-        <section id="sec-2" class="sec-2">
-            <div class="container">
-                <div class="row">
-                    <div class="skill-box col-lg-4 mb-4 pt-5 pb-5">
-                        <h4>用專業的技術為您提供服務</h4>
-                        <ul>
-                            <li>Web Site (RWD)/Campaign Site (RWD)</li>
-                            <li>Html5/Css3/Scss/jQuery/vueJs</li>
-                            <li>App User Interface</li>
-                            <li>Facebook Canvas/Banner</li>
-                            <li>Graphic/Logo</li>
-                            <li>Flash ActionScript3</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Skills -->
-        <section id="sec-3">
-            <div class="container">
-                <div class="row">
-                    <div class="col mt-5">
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+<template lang="pug">
+    div(id='home',class='home',v-scroll-spy='{offset:60}')
+        section(ref='about',id="sec-1",class='sec-1')
+            div(class='container pt-lg-5 pt-3')
+                div(class='row')
+                    div(ref='contentBox',class='content-box col-lg-8')
+                        h4(class='title') {{ contentDatas.about.title }}
+                        p(class='content') {{ contentDatas.about.content }}
+                        ul(class='profile pt-3')
+                            li
+                                span(class='badge badge-secondary mr-2') Name
+                                span {{ contentDatas.about.name }}
+                            li
+                                span(class='badge badge-secondary mr-2') Line
+                                span {{ contentDatas.about.line }}
+                            li
+                                span(class='badge badge-secondary mr-2') Mail
+                                span
+                                    a(:href='[this.contentDatas.about.mail]') {{ contentDatas.about.mail }}
+                            li
+                                span(class='badge badge-secondary mr-2') Mobile
+                                span {{ contentDatas.about.mobile }}
+                    div(ref='imgBox',class='img-box col-lg-4 mb-4')
+                        img(:src='contentDatas.about.img',alt='img',class="w-100")
+
+        section(ref='skill',id="sec-2",class='sec-2')
+            div(class='container pt-lg-5 pt-3')
+                div(class='row')
+                    div(class='skill-box col-lg-4 mb-4 pt-5 pb-5')
+                        h4 {{ contentDatas.skill.title }}
+                        ul
+                            li(v-for='item in contentDatas.skill.list') {{ item }}
+
+        section(id='sec-3')
+            div(class='container')
+                div(class='row')
+                    div(class='col mt-5')
 </template>
 
 <script>
@@ -77,7 +47,7 @@ export default {
         return {
             scrollTop: 0,
             secActs: [],
-            jsonDatas:[],
+            jsonDatas: [],
             contentDatas: {
                 about: {
                     title: "資深網頁 / 插畫 / 視覺設計師",
@@ -87,7 +57,18 @@ export default {
                     line: "yider",
                     mail: "superyider@gmail.com",
                     mobile: "0939180232",
-                    img:"https://fakeimg.pl/300x300/eee"
+                    img: "https://fakeimg.pl/300x300/eee"
+                },
+                skill: {
+                    title: "用專業的技術為您提供服務",
+                    list: [
+                        "Web Site (RWD)/Campaign Site (RWD)",
+                        "Html5/Css3/Scss/jQuery/vueJs",
+                        "App User Interface",
+                        "Facebook Canvas/Banner",
+                        "Graphic/Logo",
+                        "Flash ActionScript3"
+                    ]
                 }
             }
         };
@@ -97,20 +78,19 @@ export default {
             //this.scrollSpy(val);
         }
     },
-    created(){
+    created() {
         //取得資料
         this.getData();
     },
     mounted() {
-
         //動畫效果
         const { imgBox, contentBox, about } = this.$refs;
-        const sec1Act = new TimelineMax({ delay: 0.4, paused: true});
+        const sec1Act = new TimelineMax({ delay: 0.4, paused: true });
         this.secActs[0] = sec1Act;
         sec1Act
-        .from(contentBox, 1, { y: "10%", opacity: 0 })
-        .from(imgBox, 1, { x: "50%", opacity: 0 }, "-=1")
-        .play();
+            .from(contentBox, 1, { y: "10%", opacity: 0 })
+            .from(imgBox, 1, { x: "50%", opacity: 0 }, "-=1")
+            .play();
 
         //捲動偵測
         window.onscroll = () => {
@@ -153,16 +133,19 @@ export default {
                 this.$store.commit("setNavStatus", 2);
             }
         },
-        scrollEnd(){
+        scrollEnd() {
             let that = this;
             that.scrollSpy(that.scrollTop);
         },
         getData() {
             //const cors = "https://cors-anywhere.herokuapp.com/";
-            const url = "https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json";
+            const url =
+                "https://tcgbusfs.blob.core.windows.net/blobyoubike/YouBikeTP.json";
             let that = this;
             that.axios.get(`${url}`).then(response => {
-                that.jsonDatas = Object.keys(response.data.retVal).map(key => response.data.retVal[key]);
+                that.jsonDatas = Object.keys(response.data.retVal).map(
+                    key => response.data.retVal[key]
+                );
             });
         }
     }

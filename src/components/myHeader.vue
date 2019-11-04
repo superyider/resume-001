@@ -1,29 +1,19 @@
-<template>
-    <header class="header">
-        <!-- menu-btn 漢堡 -->
-        <button v-show="isMobile" :class="['nav_btn', (isOpenMenu) ? 'close':'']" @click="menuCtrl">
-            <span class="bar-1"></span>
-            <span class="bar-2"></span>
-            <span class="bar-3"></span>
-        </button>
-        <div class="container">
-            <a href class="logo">
-                <img src="images/logo_svg.svg" />
-            </a>
-
-            <!-- menu-list -->
-            <ul
-                :class="['nav',(isMobile) ? 'mobile':'',(isOpenMenu && isMobile) ? 'menuOpen':'',]"
-                v-scroll-spy-link
-            >
-                <li
-                    v-for="(item,index) in menuDatas"
-                    :key="index"
-                    :class="['item','item'+index,( activeMenu == index ) ? 'active':'']"
-                >
-                    <a class="nav-link" @click="menuActive(index,$event)">{{ item.name }}</a>
-                </li>
-            </ul>
+<template lang="pug">
+    header(class='header')
+        //menu-btn 漢堡
+        button(v-show='isMobile',:class='["nav_btn", (isOpenMenu) ? "close":""]',@click='menuCtrl')
+            span(class='bar-1')
+            span(class='bar-1')
+            span(class='bar-1')
+        div(class='container')
+            a(class='logo')
+                img(src='images/logo_svg.svg')
+            // menu-list
+            ul(:class='["nav",(isMobile) ? "mobile":"",(isOpenMenu && isMobile) ? "menuOpen":"",]',
+                v-scroll-spy-link)
+            
+                li(v-for='(item,index) in menuDatas',:key='index',:class='["item","item"+index,( activeMenu == index ) ? "active":""]')
+                    a(class='nav-link',@click='menuActive(index,$event)') {{ item.name }}
         </div>
     </header>
 </template>
@@ -32,12 +22,12 @@
 .header {
     height: 60px;
     width: 100%;
-    background:#fff;
+    background: #fff;
     display: flex;
     z-index: 9999;
     position: fixed;
     top: 0;
-    box-shadow: 0 0px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.2);
     .nav_btn {
         position: absolute;
         width: 60px;
@@ -205,8 +195,8 @@ export default {
 
         this.init();
     },
-    computed:{
-        getNavStatus(){
+    computed: {
+        getNavStatus() {
             return this.$store.getters.getNavStatus;
         }
     },
@@ -223,7 +213,7 @@ export default {
                 }, 200);
             }
         },
-        getNavStatus(val){
+        getNavStatus(val) {
             this.activeMenu = val;
         }
     },
@@ -242,11 +232,10 @@ export default {
         //set menu active
         menuActive(num, event) {
             let that = this;
-            this.activeMenu = '';
-            this.$store.commit('setNavStatus',num);
+            this.activeMenu = "";
+            this.$store.commit("setNavStatus", num);
             this.activeMenu = num;
             that.menuCtrl();
-            
         }
     }
 };
